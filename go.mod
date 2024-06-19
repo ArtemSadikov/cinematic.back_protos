@@ -1,4 +1,4 @@
-module cinematic.com/protos
+module github.com/ArtemSadikov/cinematic.back_protos
 
 go 1.22.3
 
