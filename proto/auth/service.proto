@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "cinematic.com/sso/auth/v1";
+
+service AuthService {
+  rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
+  rpc LoginByCredentials (LoginByCredentialsUserRequest) returns (LoginByCredentialsUserResponse);
+}
+
+message RegisterUserRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RegisterUserResponse {
+  string user_id = 1;
+}
+
+message LoginByCredentialsUserRequest {
+  string email = 1;
+  string password = 2;
+  string app_id = 3;
+}
+
+message LoginByCredentialsUserResponse {
+  string token = 1;
+}
