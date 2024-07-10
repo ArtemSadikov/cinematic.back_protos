@@ -15,7 +15,8 @@ message RegisterUserRequest {
 }
 
 message RegisterUserResponse {
-  string user_id = 1;
+  string id = 1;
+  string login = 2;
 }
 
 message LoginByCredentialsUserRequest {
