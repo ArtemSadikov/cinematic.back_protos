@@ -17,7 +17,6 @@ bump-version:
 	$(GIT_CMD) add .
 	$(GIT_CMD) commit -m "Bump version"
 	$(BUMP2VERSION_CMD) patch
-	$(GIT_CMD) tag `$(BUMP2VERSION_CMD) --list | grep new_version= | sed -r s,"^.*=",,`
 
 # Display help
 .PHONY: help
