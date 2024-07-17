@@ -14,9 +14,15 @@ message RegisterUserRequest {
   string password = 2;
 }
 
+message RegisterUserContactResponse {
+  string id = 1;
+  string value = 2;
+  UserContactTypeEnum type = 3;
+}
+
 message RegisterUserResponse {
   string id = 1;
-  string login = 2;
+  repeated RegisterUserContactResponse contacts = 2;
 }
 
 message LoginByCredentialsUserRequest {
@@ -27,4 +33,9 @@ message LoginByCredentialsUserRequest {
 
 message LoginByCredentialsUserResponse {
   string token = 1;
+}
+
+enum UserContactTypeEnum {
+  USER_CONTACT_TYPE_ENUM_UNSPECIFIED = 0;
+  USER_CONTACT_TYPE_ENUM_LOGIN = 1;
 }
