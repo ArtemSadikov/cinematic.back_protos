@@ -14,8 +14,6 @@ gen_proto:
 .PHONY: bump-version
 bump-version:
 	@echo "Bumping version..."
-	$(GIT_CMD) add .
-	$(GIT_CMD) commit -m "Bump version"
 	$(BUMP2VERSION_CMD) patch
 
 # Display help
