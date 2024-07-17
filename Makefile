@@ -3,7 +3,7 @@ BUMP2VERSION_CMD = bump2version
 
 # Default target
 .PHONY: all
-all: gen_proto bump-version push
+all: gen_proto bump-version
 
 gen_proto:
 	protoc -I proto ./proto/**/*.proto \
