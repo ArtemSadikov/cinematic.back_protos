@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package auth;
+package sso;
 
-import "sso/auth/model.proto";
-import "sso/user/model.proto";
+import "./auth_model.proto";
+import "./user_model.proto";
 
 option go_package = "cinematic.com/sso/auth";
 
