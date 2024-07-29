@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package auth;
+
+import "sso/auth/model.proto";
+import "sso/user/model.proto";
+
+option go_package = "cinematic.com/sso/auth";
+
+service AuthService {
+  rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
+  rpc LoginByCredentials (LoginByCredsReq) returns (LoginByCredsRes);
+  rpc RefreshToken (RefreshTokenReq) returns (RefreshTokenRes);
+}
+
+message RegisterUserRequest {
+  UserCredentials credentials = 1;
+}
+
+message RegisterUserResponse {
+  user.User user = 1;
+  Token access_token = 2;
+  Token refresh_token = 3;
+}
+
+message LoginByCredsReq {
+  UserCredentials credentials = 1;
+}
+
+message LoginByCredsRes {
+  Token access_token = 1;
+  Token refresh_token = 2;
+}
+
+message RefreshTokenReq {
+  string refresh_token = 1;
+}
+
+message RefreshTokenRes {
+  Token access_token = 1;
+}
+
+enum UserContactTypeEnum {
+  USER_CONTACT_TYPE_ENUM_UNSPECIFIED = 0;
+  USER_CONTACT_TYPE_ENUM_LOGIN = 1;
+}

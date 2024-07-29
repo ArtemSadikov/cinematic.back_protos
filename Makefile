@@ -5,8 +5,10 @@ BUMP2VERSION_CMD = bump2version
 .PHONY: all
 all: gen_proto bump-version
 
+
+PROTO_FILES := $(shell find proto -name "*.proto")
 gen_proto:
-	protoc -I proto ./proto/**/*.proto \
+	protoc -I=proto $(PROTO_FILES) \
 	--go_out=./generated/go				--go_opt=paths=source_relative \
 	--go-grpc_out=./generated/go	--go-grpc_opt=paths=source_relative
 
@@ -20,6 +22,6 @@ bump-version:
 .PHONY: help
 help:
 	@echo "Usage:"
-	@echo "  make gen_proto   - Build proto files"
+	@echo "  make gen_proto  		- Build proto files"
 	@echo "  make bump-version  - Bump the git tag version"
-	@echo "  make all           - Build proto files, bump version, and push to git"
+	@echo "  make all           - Build proto files, bump version"

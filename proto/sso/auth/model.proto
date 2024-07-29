@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package auth;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "cinematic.com/sso/auth";
+
+message UserCredentials {
+  string login = 1;
+  string password = 2;
+}
+
+message Token {
+  google.protobuf.Timestamp available_for = 1;
+  string value = 2;
+}

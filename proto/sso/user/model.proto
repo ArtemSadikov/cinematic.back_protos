@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "cinematic.back/sso/user";
+
+message User {
+  string id = 1;
+
+  UserProfile profile = 2;
+  repeated UserContact contacts = 3;
+}
+
+message UserProfile {
+  string login = 1;
+}
+
+message UserContact {
+  string id = 1;
+  string value = 2;
+  UserContactTypeEnum type = 3;
+}
+
+enum UserContactTypeEnum {
+  USER_CONTACT_TYPE_ENUM_UNSPECIFIED = 0;
+  USER_CONTACT_TYPE_ENUM_LOGIN = 1;
+}

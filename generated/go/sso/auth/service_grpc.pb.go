@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.4.0
 // - protoc             v5.27.1
-// source: auth/service.proto
+// source: sso/auth/service.proto
 
 package auth
 
@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion8
 const (
 	AuthService_RegisterUser_FullMethodName       = "/auth.AuthService/RegisterUser"
 	AuthService_LoginByCredentials_FullMethodName = "/auth.AuthService/LoginByCredentials"
+	AuthService_RefreshToken_FullMethodName       = "/auth.AuthService/RefreshToken"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -28,7 +29,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
 	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error)
-	LoginByCredentials(ctx context.Context, in *LoginByCredentialsUserRequest, opts ...grpc.CallOption) (*LoginByCredentialsUserResponse, error)
+	LoginByCredentials(ctx context.Context, in *LoginByCredsReq, opts ...grpc.CallOption) (*LoginByCredsRes, error)
+	RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*RefreshTokenRes, error)
 }
 
 type authServiceClient struct {
@@ -49,10 +51,20 @@ func (c *authServiceClient) RegisterUser(ctx context.Context, in *RegisterUserRe
 	return out, nil
 }
 
-func (c *authServiceClient) LoginByCredentials(ctx context.Context, in *LoginByCredentialsUserRequest, opts ...grpc.CallOption) (*LoginByCredentialsUserResponse, error) {
+func (c *authServiceClient) LoginByCredentials(ctx context.Context, in *LoginByCredsReq, opts ...grpc.CallOption) (*LoginByCredsRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LoginByCredentialsUserResponse)
+	out := new(LoginByCredsRes)
 	err := c.cc.Invoke(ctx, AuthService_LoginByCredentials_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*RefreshTokenRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RefreshTokenRes)
+	err := c.cc.Invoke(ctx, AuthService_RefreshToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +76,8 @@ func (c *authServiceClient) LoginByCredentials(ctx context.Context, in *LoginByC
 // for forward compatibility
 type AuthServiceServer interface {
 	RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error)
-	LoginByCredentials(context.Context, *LoginByCredentialsUserRequest) (*LoginByCredentialsUserResponse, error)
+	LoginByCredentials(context.Context, *LoginByCredsReq) (*LoginByCredsRes, error)
+	RefreshToken(context.Context, *RefreshTokenReq) (*RefreshTokenRes, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -75,8 +88,11 @@ type UnimplementedAuthServiceServer struct {
 func (UnimplementedAuthServiceServer) RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterUser not implemented")
 }
-func (UnimplementedAuthServiceServer) LoginByCredentials(context.Context, *LoginByCredentialsUserRequest) (*LoginByCredentialsUserResponse, error) {
+func (UnimplementedAuthServiceServer) LoginByCredentials(context.Context, *LoginByCredsReq) (*LoginByCredsRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginByCredentials not implemented")
+}
+func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *RefreshTokenReq) (*RefreshTokenRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -110,7 +126,7 @@ func _AuthService_RegisterUser_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _AuthService_LoginByCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginByCredentialsUserRequest)
+	in := new(LoginByCredsReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -122,7 +138,25 @@ func _AuthService_LoginByCredentials_Handler(srv interface{}, ctx context.Contex
 		FullMethod: AuthService_LoginByCredentials_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).LoginByCredentials(ctx, req.(*LoginByCredentialsUserRequest))
+		return srv.(AuthServiceServer).LoginByCredentials(ctx, req.(*LoginByCredsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshTokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).RefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_RefreshToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).RefreshToken(ctx, req.(*RefreshTokenReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -142,7 +176,11 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "LoginByCredentials",
 			Handler:    _AuthService_LoginByCredentials_Handler,
 		},
+		{
+			MethodName: "RefreshToken",
+			Handler:    _AuthService_RefreshToken_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth/service.proto",
+	Metadata: "sso/auth/service.proto",
 }
