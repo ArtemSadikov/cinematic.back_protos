@@ -4,10 +4,9 @@
 // 	protoc        v5.27.1
 // source: sso/auth_service.proto
 
-package auth
+package sso
 
 import (
-	user "cinematic.com/sso/user"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -73,9 +72,9 @@ type RegisterUserResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	User         *user.User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	AccessToken  *Token     `protobuf:"bytes,2,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
-	RefreshToken *Token     `protobuf:"bytes,3,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	User         *User  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	AccessToken  *Token `protobuf:"bytes,2,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
+	RefreshToken *Token `protobuf:"bytes,3,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
 }
 
 func (x *RegisterUserResponse) Reset() {
@@ -110,7 +109,7 @@ func (*RegisterUserResponse) Descriptor() ([]byte, []int) {
 	return file_sso_auth_service_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *RegisterUserResponse) GetUser() *user.User {
+func (x *RegisterUserResponse) GetUser() *User {
 	if x != nil {
 		return x.User
 	}
@@ -381,9 +380,9 @@ var file_sso_auth_service_proto_rawDesc = []byte{
 	0x3a, 0x0a, 0x0c, 0x52, 0x65, 0x66, 0x72, 0x65, 0x73, 0x68, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12,
 	0x14, 0x2e, 0x73, 0x73, 0x6f, 0x2e, 0x52, 0x65, 0x66, 0x72, 0x65, 0x73, 0x68, 0x54, 0x6f, 0x6b,
 	0x65, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x14, 0x2e, 0x73, 0x73, 0x6f, 0x2e, 0x52, 0x65, 0x66, 0x72,
-	0x65, 0x73, 0x68, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x73, 0x42, 0x18, 0x5a, 0x16, 0x63,
+	0x65, 0x73, 0x68, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x73, 0x42, 0x13, 0x5a, 0x11, 0x63,
 	0x69, 0x6e, 0x65, 0x6d, 0x61, 0x74, 0x69, 0x63, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x73, 0x6f,
-	0x2f, 0x61, 0x75, 0x74, 0x68, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -407,7 +406,7 @@ var file_sso_auth_service_proto_goTypes = []any{
 	(*RefreshTokenReq)(nil),      // 4: sso.RefreshTokenReq
 	(*RefreshTokenRes)(nil),      // 5: sso.RefreshTokenRes
 	(*UserCredentials)(nil),      // 6: sso.UserCredentials
-	(*user.User)(nil),            // 7: sso.User
+	(*User)(nil),                 // 7: sso.User
 	(*Token)(nil),                // 8: sso.Token
 }
 var file_sso_auth_service_proto_depIdxs = []int32{
@@ -438,6 +437,7 @@ func file_sso_auth_service_proto_init() {
 		return
 	}
 	file_sso_auth_model_proto_init()
+	file_sso_user_model_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_sso_auth_service_proto_msgTypes[0].Exporter = func(v any, i int) any {
 			switch v := v.(*RegisterUserRequest); i {
