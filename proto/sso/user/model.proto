@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package user;
 
-option go_package = "cinematic.back/sso/user";
+option go_package = "cinematic.com/sso/user";
 
 message User {
   string id = 1;
