@@ -7,6 +7,7 @@ all: gen_proto bump-version
 
 
 PROTO_FILES := $(shell find proto -name "*.proto")
+# PROTO_FODLERS := $(shell find ./proto -type d ! -name "proto")
 gen_proto:
 	protoc -I=proto $(PROTO_FILES) \
 	--go_out=./generated/go				--go_opt=paths=source_relative \

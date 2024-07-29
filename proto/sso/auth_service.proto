@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package sso;
 
-import "./auth_model.proto";
-import "./user_model.proto";
+import "sso/auth_model.proto";
+import "sso/user_model.proto";
 
 option go_package = "cinematic.com/sso/auth";
 
@@ -18,7 +18,7 @@ message RegisterUserRequest {
 }
 
 message RegisterUserResponse {
-  user.User user = 1;
+  User user = 1;
   Token access_token = 2;
   Token refresh_token = 3;
 }
@@ -38,9 +38,4 @@ message RefreshTokenReq {
 
 message RefreshTokenRes {
   Token access_token = 1;
-}
-
-enum UserContactTypeEnum {
-  USER_CONTACT_TYPE_ENUM_UNSPECIFIED = 0;
-  USER_CONTACT_TYPE_ENUM_LOGIN = 1;
 }
