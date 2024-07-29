@@ -7,7 +7,7 @@
 package auth
 
 import (
-	user "cinematic.back/sso/user"
+	user "cinematic.com/sso/user"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
