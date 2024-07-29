@@ -4,7 +4,7 @@ package sso;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "cinematic.com/sso/auth";
+option go_package = "cinematic.com/sso";
 
 message UserCredentials {
   string login = 1;

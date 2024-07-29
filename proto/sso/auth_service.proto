@@ -5,7 +5,7 @@ package sso;
 import "sso/auth_model.proto";
 import "sso/user_model.proto";
 
-option go_package = "cinematic.com/sso/auth";
+option go_package = "cinematic.com/sso";
 
 service AuthService {
   rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
