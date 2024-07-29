@@ -11,6 +11,7 @@ service AuthService {
   rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
   rpc LoginByCredentials (LoginByCredsReq) returns (LoginByCredsRes);
   rpc RefreshToken (RefreshTokenReq) returns (RefreshTokenRes);
+  rpc ValidateToken (ValidateTokenReq) returns (ValidateTokenRes);
 }
 
 message RegisterUserRequest {
@@ -38,4 +39,12 @@ message RefreshTokenReq {
 
 message RefreshTokenRes {
   Token access_token = 1;
+}
+
+message ValidateTokenReq {
+  Token access_token = 1;
+}
+
+message ValidateTokenRes {
+  bool ok = 1;
 }

@@ -22,6 +22,7 @@ const (
 	AuthService_RegisterUser_FullMethodName       = "/sso.AuthService/RegisterUser"
 	AuthService_LoginByCredentials_FullMethodName = "/sso.AuthService/LoginByCredentials"
 	AuthService_RefreshToken_FullMethodName       = "/sso.AuthService/RefreshToken"
+	AuthService_ValidateToken_FullMethodName      = "/sso.AuthService/ValidateToken"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -31,6 +32,7 @@ type AuthServiceClient interface {
 	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error)
 	LoginByCredentials(ctx context.Context, in *LoginByCredsReq, opts ...grpc.CallOption) (*LoginByCredsRes, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*RefreshTokenRes, error)
+	ValidateToken(ctx context.Context, in *ValidateTokenReq, opts ...grpc.CallOption) (*ValidateTokenRes, error)
 }
 
 type authServiceClient struct {
@@ -71,6 +73,16 @@ func (c *authServiceClient) RefreshToken(ctx context.Context, in *RefreshTokenRe
 	return out, nil
 }
 
+func (c *authServiceClient) ValidateToken(ctx context.Context, in *ValidateTokenReq, opts ...grpc.CallOption) (*ValidateTokenRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ValidateTokenRes)
+	err := c.cc.Invoke(ctx, AuthService_ValidateToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
@@ -78,6 +90,7 @@ type AuthServiceServer interface {
 	RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error)
 	LoginByCredentials(context.Context, *LoginByCredsReq) (*LoginByCredsRes, error)
 	RefreshToken(context.Context, *RefreshTokenReq) (*RefreshTokenRes, error)
+	ValidateToken(context.Context, *ValidateTokenReq) (*ValidateTokenRes, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -93,6 +106,9 @@ func (UnimplementedAuthServiceServer) LoginByCredentials(context.Context, *Login
 }
 func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *RefreshTokenReq) (*RefreshTokenRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
+}
+func (UnimplementedAuthServiceServer) ValidateToken(context.Context, *ValidateTokenReq) (*ValidateTokenRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateToken not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -161,6 +177,24 @@ func _AuthService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_ValidateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateTokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).ValidateToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_ValidateToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).ValidateToken(ctx, req.(*ValidateTokenReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -179,6 +213,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RefreshToken",
 			Handler:    _AuthService_RefreshToken_Handler,
+		},
+		{
+			MethodName: "ValidateToken",
+			Handler:    _AuthService_ValidateToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
