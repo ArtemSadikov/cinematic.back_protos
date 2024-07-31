@@ -34,7 +34,6 @@ message LoginByCredsRes {
 }
 
 message RefreshTokenReq {
-  string user_id = 1;
   string refresh_token = 2;
 }
 
